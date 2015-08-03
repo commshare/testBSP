@@ -100,3 +100,11 @@ modules.order
 linux_kernel/vmlinux
 linux_kernel/vmlinux.o
 linux_kernel/mkimage
+
+#ignore source insight files
+linux_kernel/TVBOX-LINUX-KERNEL.*
+
+#
+linux_kernel/arch/arm/boot/zImage
+linux_kernel/arch/arm/boot/uImage
+linux_kernel/arch/arm/boot/*.o
