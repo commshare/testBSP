@@ -100,11 +100,14 @@ modules.order
 linux_kernel/vmlinux
 linux_kernel/vmlinux.o
 linux_kernel/mkimage
+linux_kernel/uImage
 
 #ignore source insight files
 linux_kernel/TVBOX-LINUX-KERNEL.*
 
-#
+#this is the real file which is too big for git
+linux_kernel/arch/arm/boot/vmlinux
 linux_kernel/arch/arm/boot/zImage
 linux_kernel/arch/arm/boot/uImage
 linux_kernel/arch/arm/boot/*.o
+linux_kernel/arch/arm/boot/Image

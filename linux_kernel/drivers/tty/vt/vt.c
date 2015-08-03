@@ -37,7 +37,7 @@
  *
  *     - Arno Griffioen <arno@usn.nl>
  *     - David Carter <carter@cs.bris.ac.uk>
- * 
+ *
  *   The abstract console driver provides a generic interface for a text
  *   console. It supports VGA text mode, frame buffer based graphical consoles
  *   and special graphics processors that are only accessible through some
@@ -176,7 +176,12 @@ int console_blanked;
 
 static int vesa_blank_mode; /* 0:none 1:suspendV 2:suspendH 3:powerdown */
 static int vesa_off_interval;
-static int blankinterval = 10*60;
+/*
+黑屏间隔时间，默认是10分钟啊
+refer to http://blog.csdn.net/zanget/article/details/6569743
+
+*/
+static int blankinterval = 0;//10*60;
 core_param(consoleblank, blankinterval, int, 0444);
 
 static DECLARE_WORK(console_work, console_callback);
@@ -282,7 +287,7 @@ static void notify_update(struct vc_data *vc)
 static inline unsigned short *screenpos(struct vc_data *vc, int offset, int viewed)
 {
 	unsigned short *p;
-	
+
 	if (!viewed)
 		p = (unsigned short *)(vc->vc_origin + offset);
 	else if (!vc->vc_sw->con_screen_pos)
@@ -3721,6 +3726,7 @@ static int set_vesa_blanking(char __user *p)
 	return 0;
 }
 
+//有俩同名的在不同的文件中，应该就是这个了。
 void do_blank_screen(int entering_gfx)
 {
 	struct vc_data *vc = vc_cons[fg_console].d;
@@ -3964,9 +3970,9 @@ void reset_palette(struct vc_data *vc)
  *  Font switching
  *
  *  Currently we only support fonts up to 32 pixels wide, at a maximum height
- *  of 32 pixels. Userspace fontdata is stored with 32 bytes (shorts/ints, 
- *  depending on width) reserved for each character which is kinda wasty, but 
- *  this is done in order to maintain compatibility with the EGA/VGA fonts. It 
+ *  of 32 pixels. Userspace fontdata is stored with 32 bytes (shorts/ints,
+ *  depending on width) reserved for each character which is kinda wasty, but
+ *  this is done in order to maintain compatibility with the EGA/VGA fonts. It
  *  is up to the actual low-level console-driver convert data into its favorite
  *  format (maybe we should add a `fontoffset' field to the `display'
  *  structure so we won't have to convert the fontdata all the time.
@@ -4005,7 +4011,7 @@ static int con_font_get(struct vc_data *vc, struct console_font_op *op)
 	if (op->data && font.charcount > op->charcount)
 		rc = -ENOSPC;
 	if (!(op->flags & KD_FONT_FLAG_OLD)) {
-		if (font.width > op->width || font.height > op->height) 
+		if (font.width > op->width || font.height > op->height)
 			rc = -ENOSPC;
 	} else {
 		if (font.width != 8)
@@ -4045,7 +4051,7 @@ static int con_font_set(struct vc_data *vc, struct console_font_op *op)
 		int h, i;
 		u8 __user *charmap = op->data;
 		u8 tmp;
-		
+
 		/* If from KDFONTOP ioctl, don't allow things which can be done in userland,
 		   so that we can get rid of this soon */
 		if (!(op->flags & KD_FONT_FLAG_OLD))
