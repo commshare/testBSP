@@ -84,3 +84,14 @@
 # *~
 # \#*#
 #
+####for linux_kernel
+.*.mod
+.*.cmd
+.tmp_versions
+Module.symvers
+*.mod.*
+*.o
+#I want ko left
+#*.ko
+modules.order
+*.swp
