@@ -1,0 +1,67 @@
+root@debian-armhf:~# 
+root@debian-armhf:~# ls
+hdmires  mountnfs.sh
+root@debian-armhf:~# ls /home
+hdmires  mountnfs.sh  rc.local  uImage
+root@debian-armhf:~# INFO: task kinteractiveup:781 blocked for more than 120
+seconds.
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+kinteractiveup  D c050f8dc     0   781      2 0x00000000
+Backtrace: 
+[<c050f580>] (__schedule+0x0/0x4e0) from [<c050fae4>] (schedule+0x84/0x88)
+    [<c050fa60>] (schedule+0x0/0x88) from [<c0041250>] (kthread+0x7c/0xa0)
+    [<c00411d4>] (kthread+0x0/0xa0) from [<c002b714>] (do_exit+0x0/0x6d4)
+     r6:c002b714 r5:c00411d4 r4:ee031ef4
+     INFO: task kinteractiveup:781 blocked for more than 120 seconds.
+     "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this
+     message.
+     kinteractiveup  D c050f8dc     0   781      2 0x00000000
+     Backtrace: 
+     [<c050f580>] (__schedule+0x0/0x4e0) from [<c050fae4>] (schedule+0x84/0x88)
+    [<c050fa60>] (schedule+0x0/0x88) from [<c0041250>] (kthread+0x7c/0xa0)
+    [<c00411d4>] (kthread+0x0/0xa0) from [<c002b714>] (do_exit+0x0/0x6d4)
+     r6:c002b714 r5:c00411d4 r4:ee031ef4
+     INFO: task kinteractiveup:781 blocked for more than 120 seconds.
+     "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this
+     message.
+     kinteractiveup  D c050f8dc     0   781      2 0x00000000
+     Backtrace: 
+     [<c050f580>] (__schedule+0x0/0x4e0) from [<c050fae4>] (schedule+0x84/0x88)
+    [<c050fa60>] (schedule+0x0/0x88) from [<c0041250>] (kthread+0x7c/0xa0)
+    [<c00411d4>] (kthread+0x0/0xa0) from [<c002b714>] (do_exit+0x0/0x6d4)
+     r6:c002b714 r5:c00411d4 r4:ee031ef4
+     INFO: task kinteractiveup:781 blocked for more than 120 seconds.
+     "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this
+     message.
+     kinteractiveup  D c050f8dc     0   781      2 0x00000000
+     Backtrace: 
+     [<c050f580>] (__schedule+0x0/0x4e0) from [<c050fae4>] (schedule+0x84/0x88)
+    [<c050fa60>] (schedule+0x0/0x88) from [<c0041250>] (kthread+0x7c/0xa0)
+    [<c00411d4>] (kthread+0x0/0xa0) from [<c002b714>] (do_exit+0x0/0x6d4)
+     r6:c002b714 r5:c00411d4 r4:ee031ef4
+     Backtrace: 
+     [<c00120e0>] (dump_backtrace+0x0/0x104) from [<c0509694>]
+(dump_stack+0x18/0x1c)
+     r6:00000001 r5:eda3ac00 r4:00000001 r3:c0204000
+     [<c050967c>] (dump_stack+0x0/0x1c) from [<c0204018>]
+(nusmartfb_blank+0x18/0x64)
+    [<c0204000>] (nusmartfb_blank+0x0/0x64) from [<c01f1be8>]
+(fb_blank+0x40/0x74)
+     r6:00000001 r5:ee00c800 r4:eda3ac00 r3:c0204000
+     [<c01f1ba8>] (fb_blank+0x0/0x74) from [<c01fb66c>]
+(fbcon_blank+0x1a4/0x260)
+     r5:ee00c800 r4:eda3ac00
+     [<c01fb4c8>] (fbcon_blank+0x0/0x260) from [<c0218b80>]
+(do_blank_screen+0x19c/0x26c)
+    [<c02189e4>] (do_blank_screen+0x0/0x26c) from [<c021b2c4>]
+(console_callback+0xe0/0x110)
+     r7:ee1f0000 r6:c10a1000 r5:c083c2b8 r4:c083c2b8
+     [<c021b1e4>] (console_callback+0x0/0x110) from [<c003c46c>]
+(process_one_work+0x208/0x32c)
+     r7:ee1f0000 r6:c10a1000 r5:c109d620 r4:ee3fdf20
+     [<c003c264>] (process_one_work+0x0/0x32c) from [<c003cbb0>]
+(worker_thread+0x1b4/0x2dc)
+    [<c003c9fc>] (worker_thread+0x0/0x2dc) from [<c0041268>] (kthread+0x94/0xa0)
+    [<c00411d4>] (kthread+0x0/0xa0) from [<c002b714>] (do_exit+0x0/0x6d4)
+     r6:c002b714 r5:c00411d4 r4:ee03bed4
+     blank_mode 1

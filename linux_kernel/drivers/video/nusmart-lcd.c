@@ -1079,8 +1079,11 @@ static int nusmartfb_pan_display(struct fb_var_screeninfo *var,
  *      Return !0 for any modes that are unimplemented.
  *
  */
+ //Ô­À´ÊÇÒòÎª½øÈëµ½ÁËÕâÀï£¬µ¼ÖÂºÚÆÁå
 static int nusmartfb_blank(int blank_mode, struct fb_info *info)
 {
+	//find caller ,refer to http://blog.csdn.net/liujia2100/article/details/9009063
+	dump_stack();
 	/* ... */
 	struct nusmart_par *par = info->par;
 	printk("blank_mode %d",blank_mode);
@@ -1627,7 +1630,7 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 	struct fb_info *info;
 	struct nusmart_par *par;
 	struct device *device = &pdev->dev;
-	int cmap_len=256, retval = 0;	
+	int cmap_len=256, retval = 0;
 	struct resource *res = NULL;
 	struct fb_monspecs *specs = NULL;
 	const struct fb_videomode * m = NULL;
@@ -1641,7 +1644,7 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 	ctrace;
 
 #ifdef CONFIG_FB_DDC
-	struct i2c_adapter *adapter = NULL;	
+	struct i2c_adapter *adapter = NULL;
 	int 	ddc_adapter = 0, i = 0;
 	unsigned char * edid = NULL;
 #endif
@@ -1661,7 +1664,7 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 
 	if (!info) {
 		/* goto error path */
-		goto out;		
+		goto out;
 	}
 
 	par = info->par;
@@ -1682,7 +1685,7 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 #ifdef CONFIG_FB_DDC
 		/*
 		 * get ddc adapter info from platform data
-		 */	
+		 */
 		platform_data = pdev->dev.platform_data;
 		if(platform_data == NULL){
 			err("get platform data failed.");
@@ -1704,8 +1707,8 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 						} else {
 							printk(" %02X", edid[i]);
 						}
-					}    
-				}	
+					}
+				}
 				i2c_put_adapter(adapter);
 			}else{
 				printk(KERN_EMERG "begin get lcd0 adapter failed\n");
@@ -1748,7 +1751,7 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 		par->clk = clk_get(NULL, "ns115_lcdc1");
 		par->rgb_clk = clk_get(NULL, "ns115_hdmi_pxl");
 		fb1_info = info;
-		info->pseudo_palette = pseudo_palette1; 
+		info->pseudo_palette = pseudo_palette1;
 		info->fix = nusmartfb_fix1;
 		info->mode = &fb1_mode;
 	}
@@ -1761,17 +1764,17 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 		return PTR_ERR(par->clk);
 	}
 
-	/* 
+	/*
 	 * Here we set the screen_base to the virtual memory address
 	 * for the framebuffer. Usually we obtain the resource address
 	 * from the bus layer and then translate it to virtual memory
-	 * space via ioremap. Consult ioport.h. 
+	 * space via ioremap. Consult ioport.h.
 	 */
 	info->fbops = &nusmartfb_ops;
 	retval = video_mem_alloc(info, id);
 
 	if(retval < 0) {
-		printk(KERN_EMERG "alloc video mem failed!\n");	
+		printk(KERN_EMERG "alloc video mem failed!\n");
 		goto free_fbinfo;
 	}
 
@@ -1781,14 +1784,14 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 		retval = -ENXIO;
 		goto free_video_mem;
 	}
-	info->fix.mmio_start = res->start;	
+	info->fix.mmio_start = res->start;
 	info->fix.mmio_len = res->end - res->start +1;
 
 	par->mmio = ioremap_nocache(info->fix.mmio_start,info->fix.mmio_len);
 	if(!par->mmio) {
 		printk(KERN_EMERG "ioremap failed!\n");
 		retval = -ENOMEM;
-		goto free_video_mem;	
+		goto free_video_mem;
 	}
 
 	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
@@ -1798,7 +1801,7 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 		goto unmap_mmio;
 	}
 
-	par->irq = res->start;	
+	par->irq = res->start;
 	if(id == 0)
 		retval = request_irq(par->irq, nusmart_lcdc_irq, IRQF_SHARED, DISP0_NAME, par);
 	else
@@ -1809,7 +1812,7 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 	}
 
 #ifdef  WAIT_FOR_VSYNC
-	par->irq_vert = res->start+1;	
+	par->irq_vert = res->start+1;
 	retval = request_irq(par->irq_vert, nusmart_lcdc_vert_irq, IRQF_DISABLED|IRQF_SHARED, "nusmartfb_vert", par);
 	if(retval < 0) {
 		printk(KERN_EMERG "request nusmartfb vert irq failed!\n");
@@ -1841,7 +1844,7 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 
 	/*
 	 * This should give a reasonable default video mode. The following is
-	 * done when we can set a video mode. 
+	 * done when we can set a video mode.
 	 */
 	if (!strcmp(mode_option, DDC_ARGS)) {
 		mode_option = "1024x600-16@60";
@@ -1861,10 +1864,10 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 		if(0 != bits_per_pixel){
 			info->var.bits_per_pixel = bits_per_pixel;
 		}else{
-			//set default bits_per_pixel as 32 
+			//set default bits_per_pixel as 32
 			info->var.bits_per_pixel = 32;
 
-			printk(KERN_INFO "nusmartfb%d: set default bits_per_pixel as %d\n", 
+			printk(KERN_INFO "nusmartfb%d: set default bits_per_pixel as %d\n",
 				id, info->var.bits_per_pixel );
 		}
 	}
@@ -1876,7 +1879,7 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 		fb_videomode_to_var(&info->var, &mode);
 	}else{
 		printk(KERN_ERR "fb1 not fetch edid, set default mode as %s\n", mode_option_disp1);
-		//mode_option = mode_option_disp1; 
+		//mode_option = mode_option_disp1;
 		retval = fb_find_mode(&stdvar, info, mode_option, NULL, 0,NULL, info->var.bits_per_pixel);
 		fb_var_to_videomode(&mode, &stdvar);
 		fb_videomode_to_var(&info->var, &mode);
@@ -1885,9 +1888,9 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 	}
 	if (!retval || retval == 4) {
 		printk(KERN_EMERG "find mode failed!\n");
-		retval = -EINVAL;	
+		retval = -EINVAL;
 		goto free_irq;
-	}		
+	}
 
 	/*add mode list*/
 	//fb_videomode_to_modelist(vesa_modes,VESA_MODEDB_SIZE,&info->modelist);
@@ -1901,7 +1904,7 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 			"sync:%d\n",info->var.left_margin,info->var.right_margin,
 			info->var.hsync_len, info->var.upper_margin,info->var.lower_margin,
 			info->var.vsync_len, info->var.sync);
-	/* This has to been done !!! */	
+	/* This has to been done !!! */
 	fb_alloc_cmap(&info->cmap, cmap_len, 0);
 
 	nusmartfb_check_var(&info->var, info);
@@ -1929,7 +1932,7 @@ static int __devinit nusmartfb_probe(struct platform_device *pdev)
 	early_suspend[id].fb = info;
 	register_early_suspend(&early_suspend[id].es);
 #endif
-	
+
 #ifndef CONFIG_MACH_NS115_STICK
 	if(1 == id){
 		nusmart_clcd_disable(info);
@@ -1994,7 +1997,7 @@ static ssize_t show_all_vendor(struct device *dev, struct device_attribute *attr
 {
        struct fb_info *info = dev_get_drvdata(dev);
        struct fb_monspecs *specs = &info->monspecs;
-               
+
 	snprintf(buf, PAGE_SIZE, "%d.%d:%s:%d:%d:%s:%s:%d:%d", (int)specs->version, (int)specs->revision, specs->manufacturer, specs->model, specs->serial, specs->monitor, specs->serial_no, specs->max_x, specs->max_y);
 }
 
@@ -2018,7 +2021,7 @@ static int nusmartfb_save(struct fb_info * info)
 	}
 
 	clk_disable(par->rgb_clk);
-		
+
 	/* suspend here */
 	return 0;
 }
@@ -2186,7 +2189,7 @@ void fb_add_720p(struct list_head *head)
 		list_for_each_safe(pos, n, head) {
 			modelist = list_entry(pos, struct fb_modelist, list);
 			m = &modelist->mode;
-			if( (m->xres == 1280) && (m->yres == 720) )  
+			if( (m->xres == 1280) && (m->yres == 720) )
 			{
 				if(50 != m->refresh){
 					if(!flag){
@@ -2351,7 +2354,7 @@ int hdmi_edid_fetch(unsigned char *edid, struct fb_info *info)
 		fb_edid_to_monspecs(edid, specs);
 		if(*(edid + 126))
 		{
-			fb_edid_add_monspecs(edid + 0x80, specs); 
+			fb_edid_add_monspecs(edid + 0x80, specs);
 		}
 
                if(device_create_file(info->dev, &dev_attr_vendor)){
@@ -2407,9 +2410,9 @@ int hdmi_edid_fetch(unsigned char *edid, struct fb_info *info)
 
 					if((m->xres == 1280) && (m->yres == 720))
 						info->var.pixclock = 13468;
-#endif		
+#endif
 				} else {
-					printk(KERN_EMERG "fb%d: %s get best display failed!\n", 
+					printk(KERN_EMERG "fb%d: %s get best display failed!\n",
 							info->node, info->fix.id);
 					ret = -2;
 				}
@@ -2442,7 +2445,7 @@ static int enable_lcd1(struct ns115_hdmi_lcdc_data *hdmi)
 	if(!set_resolution){
 
 		if(retval || (1 == get_lcd1_args)){
-			printk(KERN_WARNING "fb1 not fetch edid or get_lcd1_args = %d, set default mode as %s\n", 
+			printk(KERN_WARNING "fb1 not fetch edid or get_lcd1_args = %d, set default mode as %s\n",
 				get_lcd1_args, mode_option_disp1);
 			retval = fb_find_mode(&stdvar, fb1_info, mode_option_disp1, NULL, 0,NULL, 16);
 			fb_var_to_videomode(&mode, &stdvar);
@@ -2451,13 +2454,13 @@ static int enable_lcd1(struct ns115_hdmi_lcdc_data *hdmi)
 			memcpy(fb1_info->mode, &mode, sizeof(struct fb_videomode));
 			hdmi->refresh = 60;
 		}else{
-			printk(KERN_INFO "%dx%d-%d pixclock %d\n", 
+			printk(KERN_INFO "%dx%d-%d pixclock %d\n",
 				fb1_info->var.xres, fb1_info->var.yres,
 				fb1_info->var.bits_per_pixel, fb1_info->var.pixclock);
 			hdmi->refresh = fb1_info->mode->refresh;
 		}
 	}else{
-		printk(KERN_INFO "%dx%d-%d pixclock %d\n", 
+		printk(KERN_INFO "%dx%d-%d pixclock %d\n",
 			fb1_info->var.xres, fb1_info->var.yres,
 			fb1_info->var.bits_per_pixel, fb1_info->var.pixclock);
 		hdmi->refresh = fb1_info->mode->refresh;
@@ -2564,7 +2567,7 @@ int ns115_fb_switch_screen(const struct fb_videomode *mode,int enable ,int id)
 
         if(enable){
             nusmartfb_check_var(&fb0_info->var, fb0_info);
-		     nusmartfb_set_par(fb0_info); 
+		     nusmartfb_set_par(fb0_info);
         }else
 		{
             nusmart_clcd_disable(fb0_info);
@@ -2689,7 +2692,7 @@ static int __init nusmartfb_init(void)
 	}
 	ret = platform_driver_register(&nusmartfb_driver[0]);
 
-	if (ret) 
+	if (ret)
 		dbg("nusmartfb_driver 0 register failed! retval = %d", ret);
 
 #if 1
@@ -2714,7 +2717,7 @@ static int __init nusmartfb_init(void)
 
 	ret = platform_driver_register(&nusmartfb_driver[1]);
 
-	if (ret) 
+	if (ret)
 		dbg("nusmartfb_driver 0 register failed! retval = %d", ret);
 #endif	/* DUAL_LCD */
 
