@@ -91,7 +91,12 @@
 Module.symvers
 *.mod.*
 *.o
-#I want ko left
-#*.ko
+#I want ko left, no .ko maybe right for size
+*.ko
 modules.order
-*.swp
+*.sw
+
+###too big file for github
+linux_kernel/vmlinux
+linux_kernel/vmlinux.o
+linux_kernel/mkimage
