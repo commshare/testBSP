@@ -1,0 +1,14 @@
+root@Ubuntu32:/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel# grep
+-nR "Change CPU clock at Auto mode" .
+匹配到二进制文件 ./vmlinux.o
+匹配到二进制文件 ./arch/arm/boot/Image
+./arch/arm/mach-tl7689/prcm.c:3796:     printk(KERN_NOTICE"Change CPU clock
+        at Auto mode\n");
+匹配到二进制文件 ./arch/arm/mach-ns115/prcm.o
+匹配到二进制文件 ./arch/arm/mach-ns115/built-in.o
+./arch/arm/mach-ns115/prcm.c:3997:      printk(KERN_NOTICE"Change CPU clock
+        at Auto mode\n");
+匹配到二进制文件 ./.tmp_vmlinux1
+匹配到二进制文件 ./vmlinux
+匹配到二进制文件 ./.tmp_vmlinux2
+

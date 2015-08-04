@@ -27,6 +27,7 @@
 
 #include "clock.h"
 #include "prcm.h"
+#include"sc_115_config.h"
 
 
 #define CLK_NORMAL	1000000000
@@ -3929,6 +3930,10 @@ int ns115_pwm_clk_disable(struct clk *clk)
 // CPU Clock Rate Setting
 int ns115_cpu_clk_set_rate(struct clk *c, unsigned long rate, unsigned int nouse)
 {
+	#if SC_DUMP_STACK
+	//不知道这个会使用哪个文件里头的dump_stack();
+	dump_stack();
+	#endif
 	void __iomem *cpu_clk_switch = __io_address(PRCM_CPU_CLK_SWITCH);
 	void __iomem *cpu_clk_div = __io_address(PRCM_CPU_CLK_DIV);
 
@@ -3948,7 +3953,9 @@ int ns115_cpu_clk_set_rate(struct clk *c, unsigned long rate, unsigned int nouse
 
 	// Manual mode
 	if (!(cpu_clk_switch_reg & PRCM_CPU_CLK_SWITCH_CPU_AUTO_SEL_MODE)) {
+		#ifdef SC_PRINT_CPUFREQ
 		printk(KERN_NOTICE "Change CPU clock at Manual mode\n");
+		#endif
 		reg_clr_bits(cpu_clk_switch, PRCM_CPU_CLK_SWITCH_CPU_MU0_SEL_EN | PRCM_CPU_CLK_SWITCH_CPU_MU1_SEL_EN);
 		if (!(cpu_clk_switch_reg & PRCM_CPU_CLK_SWITCH_CPU_MUX_SWITCH)) { // current SWITCH0
 			// switch to PLL1_CLKOUT, use SWITCH1
@@ -3994,7 +4001,9 @@ int ns115_cpu_clk_set_rate(struct clk *c, unsigned long rate, unsigned int nouse
 
 	}
 	else { // Auto mode
+	#ifdef SC_PRINT_CPUFREQ
 		printk(KERN_NOTICE"Change CPU clock at Auto mode\n");
+	#endif
 
 		// Switch to PLL1
 		reg_clr_bits(cpu_clk_switch, PRCM_CPU_CLK_SWITCH_CPU_AUTO_SEL_EN);

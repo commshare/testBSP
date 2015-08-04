@@ -1,0 +1,135 @@
+Debian GNU/Linux 7 debian-armhf ttyS0
+
+debian-armhf login: root
+Password: 
+Last login: Thu Jan  1 00:00:34 UTC 1970 on ttyS0
+Linux debian-armhf 3.4.0-g3684991-dirty #20 SMP PREEMPT Mon Aug 3 10:28:54 CST
+2015 armv7l
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+                                    Debian GNU/LiBacktrace: 
+                                    [<c00120e0>] (dump_backtrace+0x0/0x104)
+                                    from [<c0509694>] (dump_stack+0x18/0x1c)
+                                     r6:00000000 r5:3b9aca00 r4:fc821000
+                                     r3:c002018c
+                                     [<c050967c>] (dump_stack+0x0/0x1c) from
+                                     [<c00201ac>]
+                                     (ns115_cpu_clk_set_rate+0x20/0x1fc)
+                                     [<c002018c>]
+                                     (ns115_cpu_clk_set_rate+0x0/0x1fc) from
+                                     [<c001cba0>] (clk_set_rate+0x68/0x9c)
+                                      r8:c06d353c r7:60000113 r6:3b9aca00
+                                      r5:c0722200 r4:c06dead4
+                                      r3:c002018c
+                                      [<c001cb38>] (clk_set_rate+0x0/0x9c) from
+                                      [<c0024f44>]
+                                      (ns115_update_cpu_speed+0x104/0x184)
+                                       r7:c06d353c r6:c06d3488 r5:c0722200
+                                       r4:000004ce
+                                       [<c0024e40>]
+                                       (ns115_update_cpu_speed+0x0/0x184) from
+                                       [<c0025028>] (ns115_target+0x64/0x90)
+                                        r8:c10a6058 r7:ee386860 r6:000f4240
+                                        r5:00000001 r4:c06df71c
+                                        [<c0024fc4>] (ns115_target+0x0/0x90)
+                                        from [<c03598cc>]
+                                        (__cpufreq_driver_target+0xa4/0xd0)
+                                         r7:ee386860 r6:000f4240 r5:00000001
+                                         r4:ee386860
+                                         [<c0359828>]
+                                         (__cpufreq_driver_target+0x0/0xd0)
+                                         from [<c035d77c>]
+                                         (do_dbs_timer+0x364/0x418)
+                                          r6:c109e07c r5:01fa9780
+                                          r4:c0705330
+                                          [<c035d418>]
+                                          (do_dbs_timer+0x0/0x418) from
+                                          [<c003c46c>]
+                                          (process_one_work+0x208/0x32c)
+                                          [<c003c264>]
+                                          (process_one_work+0x0/0x32c) from
+                                          [<c003cbb0>]
+                                          (worker_thread+0x1b4/0x2dc)
+                                          [<c003c9fc>]
+                                          (worker_thread+0x0/0x2dc) from
+                                          [<c0041268>] (kthread+0x94/0xa0)
+                                          [<c00411d4>] (kthread+0x0/0xa0) from
+                                          [<c002b714>] (do_exit+0x0/0x6d4)
+                                           r6:c002b714 r5:c00411d4
+                                           r4:ee03bed4
+                                           Change CPU clock at Auto mode
+                                           pll0 clock rate set to
+                                           1000000000.
+                                           nux comes with ABSOLUTELY NO
+                                           WARRANTY, to the extent
+                                           permitted by applicable law.
+                                           root@debian-armhf:~# Backtrace: 
+                                           [<c00120e0>]
+                                           (dump_backtrace+0x0/0x104) from
+                                           [<c0509694>] (dump_stack+0x18/0x1c)
+                                            r6:00000000 r5:2faf0800
+                                            r4:fc821000 r3:c002018c
+                                            [<c050967c>] (dump_stack+0x0/0x1c)
+                                            from [<c00201ac>]
+                                            (ns115_cpu_clk_set_rate+0x20/0x1fc)
+                                            [<c002018c>]
+                                            (ns115_cpu_clk_set_rate+0x0/0x1fc)
+                                            from [<c001cba0>]
+                                            (clk_set_rate+0x68/0x9c)
+ r8:c06d353c r7:60000013 r6:2faf0800 r5:c0722200 r4:c06dead4
+ r3:c002018c
+ [<c001cb38>] (clk_set_rate+0x0/0x9c) from [<c0024f44>]
+(ns115_update_cpu_speed+0x104/0x184)
+     r7:c06d353c r6:c06d3488 r5:c0722200 r4:000004ce
+     [<c0024e40>] (ns115_update_cpu_speed+0x0/0x184) from [<c0025028>]
+(ns115_target+0x64/0x90)
+     r8:c10a6058 r7:ee386860 r6:0006ef91 r5:00000000 r4:c06df714
+     [<c0024fc4>] (ns115_target+0x0/0x90) from [<c03598cc>]
+(__cpufreq_driver_target+0xa4/0xd0)
+     r7:ee386860 r6:0006ef91 r5:00000000 r4:ee386860
+     [<c0359828>] (__cpufreq_driver_target+0x0/0xd0) from [<c035d77c>]
+(do_dbs_timer+0x364/0x418)
+     r6:c109e07c r5:02160ec0 r4:c0705330
+     [<c035d418>] (do_dbs_timer+0x0/0x418) from [<c003c46c>]
+(process_one_work+0x208/0x32c)
+    [<c003c264>] (process_one_work+0x0/0x32c) from [<c003cbb0>]
+(worker_thread+0x1b4/0x2dc)
+    [<c003c9fc>] (worker_thread+0x0/0x2dc) from [<c0041268>] (kthread+0x94/0xa0)
+    [<c00411d4>] (kthread+0x0/0xa0) from [<c002b714>] (do_exit+0x0/0x6d4)
+     r6:c002b714 r5:c00411d4 r4:ee03bed4
+     Change CPU clock at Auto mode
+     pll0 clock rate set to 800000000.
+     Backtrace: 
+     [<c00120e0>] (dump_backtrace+0x0/0x104) from [<c0509694>]
+(dump_stack+0x18/0x1c)
+     r6:00000000 r5:17d78400 r4:fc821000 r3:c002018c
+     [<c050967c>] (dump_stack+0x0/0x1c) from [<c00201ac>]
+(ns115_cpu_clk_set_rate+0x20/0x1fc)
+    [<c002018c>] (ns115_cpu_clk_set_rate+0x0/0x1fc) from [<c001cba0>]
+(clk_set_rate+0x68/0x9c)
+     r8:c06d353c r7:60000013 r6:17d78400 r5:c0722200 r4:c06dead4
+     r3:c002018c
+     [<c001cb38>] (clk_set_rate+0x0/0x9c) from [<c0024f44>]
+(ns115_update_cpu_speed+0x104/0x184)
+     r7:c06d353c r6:c06d3488 r5:c0722200 r4:000004ce
+     [<c0024e40>] (ns115_update_cpu_speed+0x0/0x184) from [<c0025028>]
+(ns115_target+0x64/0x90)
+     r8:c10a6058 r7:ee386860 r6:00061a80 r5:00000000 r4:c06df70c
+     [<c0024fc4>] (ns115_target+0x0/0x90) from [<c03598cc>]
+(__cpufreq_driver_target+0xa4/0xd0)
+     r7:ee386860 r6:00061a80 r5:00000000 r4:ee386860
+     [<c0359828>] (__cpufreq_driver_target+0x0/0xd0) from [<c035d77c>]
+(do_dbs_timer+0x364/0x418)
+     r6:c109e07c r5:00000000 r4:c0705330
+     [<c035d418>] (do_dbs_timer+0x0/0x418) from [<c003c46c>]
+(process_one_work+0x208/0x32c)
+    [<c003c264>] (process_one_work+0x0/0x32c) from [<c003cbb0>]
+(worker_thread+0x1b4/0x2dc)
+    [<c003c9fc>] (worker_thread+0x0/0x2dc) from [<c0041268>] (kthread+0x94/0xa0)
+    [<c00411d4>] (kthread+0x0/0xa0) from [<c002b714>] (do_exit+0x0/0x6d4)
+     r6:c002b714 r5:c00411d4 r4:ee03bed4
+     Change CPU clock at Auto mode
+     pll0 clock rate set to 400000000.
