@@ -101,6 +101,7 @@ linux_kernel/vmlinux
 linux_kernel/vmlinux.o
 linux_kernel/mkimage
 linux_kernel/uImage
+linux_kernel/.tmp_*
 
 #ignore source insight files
 linux_kernel/TVBOX-LINUX-KERNEL.*
