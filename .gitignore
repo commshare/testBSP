@@ -112,3 +112,13 @@ linux_kernel/arch/arm/boot/zImage
 linux_kernel/arch/arm/boot/uImage
 linux_kernel/arch/arm/boot/*.o
 linux_kernel/arch/arm/boot/Image
+
+
+####for test H.264 and yuv
+.yuv
+.h264
+.264
+.out
+.H264
+.YUV
+
