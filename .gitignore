@@ -115,10 +115,10 @@ linux_kernel/arch/arm/boot/Image
 
 
 ####for test H.264 and yuv
-.yuv
-.h264
-.264
-.out
-.H264
-.YUV
+*.yuv
+*.h264
+*.264
+*.out
+*.H264
+*.YUV
 

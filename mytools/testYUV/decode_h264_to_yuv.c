@@ -7,7 +7,8 @@
 #include <libavformat/avformat.h>
 #include <libavutil/mathematics.h>
 
-#define DECODED_OUTPUT_FORMAT  AV_PIX_FMT_YUV420P
+#define DECODED_OUTPUT_FORMAT  AV_PIX_FMT_NV21  /*NV12 UV*/
+// AV_PIX_FMT_YUV420P
 #define INPUT_FILE_NAME "/home/zhangbin/zbhome/omx/bsp/debian/wheezy/nfshome/720p.h264.raw"
 #define OUTPUT_FILE_NAME "decode.yuv"
 /*h264文件的宽度和高度，必须和实际的宽度和高度一致
