@@ -7,6 +7,7 @@
 #include <libavformat/avformat.h>
 #include <libavutil/mathematics.h>
 
+//http://ffmpeg.org/doxygen/trunk/pixfmt_8h.html#a9a8e335cf3be472042bc9f0cf80cd4c5a0b271df0acd125218c1e365a0f754022
 #define DECODED_OUTPUT_FORMAT  AV_PIX_FMT_NV21  /*NV12 UV*/
 // AV_PIX_FMT_YUV420P
 #define INPUT_FILE_NAME "/home/zhangbin/zbhome/omx/bsp/debian/wheezy/nfshome/720p.h264.raw"

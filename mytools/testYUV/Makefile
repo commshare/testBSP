@@ -11,7 +11,7 @@ CFLAGS += -Wall -O2 -g
 CFLAGS := $(shell pkg-config --cflags $(FFMPEG_LIBS)) $(CFLAGS)
 LDLIBS := $(shell pkg-config --libs $(FFMPEG_LIBS)) $(LDLIBS)
 
-EXAMPLES= decode_h264_to_yuv #yuvTO264
+EXAMPLES= decode_h264_to_yuv sc_yuv_sp2p  #yuvTO264
                 						
 OBJS=$(addsuffix .o,$(EXAMPLES))
 
