@@ -133,6 +133,7 @@ int main(int argc ,char *argv[]){
 		return -1;
 	}
 	memset(p,0,PIC_SIZE);
+	///read Y from file to p memory
 	int ret=fread(p,Y_SIZE,1,fp);
 	/*
 	如果是: fread(buff, size, 1, fp)
@@ -164,11 +165,18 @@ int main(int argc ,char *argv[]){
 		return -1;
 	}
 	int i=0;
+	#if 1
 	for(i=0;i<U_SIZE;i++){
-		//Öð×Ö½Ú¸´ÖÆ
-		memcpy(p,temp_uv+i*2,1);
-		memcpy(p+U_SIZE,temp_uv+1+i*2,1);
+		//copy U  from UV to P
+		memcpy(p+Y_SIZE+i,temp_uv+i*2,1);	
 	}
+	for(i=0;i<V_SIZE;i++){
+		//copy V  from UV to P
+		memcpy(p+Y_SIZE+U_SIZE+i,temp_uv+1+i*2,1);
+	}
+	#endif
+
+	//////////////////////////////////////////////////
 	FILE * p_outfile=NULL;
 	p_outfile=fopen(OUT_NAME,"wb");
 	if(p_outfile==NULL){
@@ -177,6 +185,7 @@ int main(int argc ,char *argv[]){
 		goto FAIL;
 		return -1;
 	}
+	//write the whole p memory to file
 	ret=fwrite(p,PIC_SIZE,1,p_outfile);
 	LOGD("fwrite to OUT_NAME [%s]  RET[%d] original_filesize[%d]",OUT_NAME,ret,get_file_size(INPUT_NAME));
 
