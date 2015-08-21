@@ -1,0 +1,607 @@
+rm -f include/config/kernel.release
+echo "3.4.0$(/bin/bash /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/scripts/setlocalversion /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel)" > include/config/kernel.release
+make -f /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/scripts/Makefile.asm-generic \
+	            obj=arch/arm/include/generated/asm
+set -e; : '  CHK     include/linux/version.h'; mkdir -p include/linux/; 	(echo \#define LINUX_VERSION_CODE 197632; echo '#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + (c))';) < /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/Makefile > include/linux/version.h.tmp; if [ -r include/linux/version.h ] && cmp -s include/linux/version.h include/linux/version.h.tmp; then rm -f include/linux/version.h.tmp; else : '  UPD     include/linux/version.h'; mv -f include/linux/version.h.tmp include/linux/version.h; fi
+set -e; : '  CHK     include/generated/utsrelease.h'; mkdir -p include/generated/; 	if [ `echo -n "3.4.0" | wc -c ` -gt 64 ]; then echo '"3.4.0" exceeds 64 characters' >&2; exit 1; fi; (echo \#define UTS_RELEASE \"3.4.0\";) < include/config/kernel.release > include/generated/utsrelease.h.tmp; if [ -r include/generated/utsrelease.h ] && cmp -s include/generated/utsrelease.h include/generated/utsrelease.h.tmp; then rm -f include/generated/utsrelease.h.tmp; else : '  UPD     include/generated/utsrelease.h'; mv -f include/generated/utsrelease.h.tmp include/generated/utsrelease.h; fi
+mkdir -p .tmp_versions ; rm -f .tmp_versions/*
+make -f scripts/Makefile.build obj=scripts/basic
+(cat /dev/null; ) > scripts/basic/modules.order
+rm -f .tmp_quiet_recordmcount
+make -f scripts/Makefile.build obj=arch/arm/tools include/generated/mach-types.h
+make[1]: “include/generated/mach-types.h”是最新的。
+make -f scripts/Makefile.build obj=.
+(cat /dev/null; ) > modules.order
+mkdir -p kernel/
+mkdir -p arch/arm/kernel/
+  /bin/bash scripts/checksyscalls.sh arm-linux-gnueabihf-gcc -Wp,-MD,./.missing-syscalls.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO    -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(missing_syscalls)"  -D"KBUILD_MODNAME=KBUILD_STR(missing_syscalls)" 
+make -f scripts/Makefile.build obj=scripts
+make -f scripts/Makefile.build obj=scripts/mod
+(cat /dev/null; ) > scripts/mod/modules.order
+(cat /dev/null; ) > scripts/modules.order
+make -f scripts/Makefile.build obj=init
+(cat /dev/null; ) > init/modules.order
+make -f scripts/Makefile.build obj=usr
+(cat /dev/null; ) > usr/modules.order
+make -f scripts/Makefile.build obj=arch/arm/vfp
+(cat /dev/null; ) > arch/arm/vfp/modules.order
+make -f scripts/Makefile.build obj=arch/arm/kernel
+(cat /dev/null; ) > arch/arm/kernel/modules.order
+make -f scripts/Makefile.build obj=arch/arm/mm
+(cat /dev/null; ) > arch/arm/mm/modules.order
+make -f scripts/Makefile.build obj=arch/arm/common
+(cat /dev/null; ) > arch/arm/common/modules.order
+make -f scripts/Makefile.build obj=arch/arm/net
+(cat /dev/null; ) > arch/arm/net/modules.order
+make -f scripts/Makefile.build obj=arch/arm/mach-ns115
+(cat /dev/null; ) > arch/arm/mach-ns115/modules.order
+make -f scripts/Makefile.build obj=kernel
+make -f scripts/Makefile.build obj=kernel/debug
+(cat /dev/null; ) > kernel/debug/modules.order
+make -f scripts/Makefile.build obj=kernel/irq
+(cat /dev/null; ) > kernel/irq/modules.order
+make -f scripts/Makefile.build obj=kernel/power
+(cat /dev/null; ) > kernel/power/modules.order
+make -f scripts/Makefile.build obj=kernel/sched
+(cat /dev/null; ) > kernel/sched/modules.order
+make -f scripts/Makefile.build obj=kernel/time
+(cat /dev/null; ) > kernel/time/modules.order
+(cat /dev/null;   cat kernel/sched/modules.order;   cat kernel/power/modules.order;   cat kernel/time/modules.order;   cat kernel/debug/modules.order;   cat kernel/irq/modules.order;) > kernel/modules.order
+make -f scripts/Makefile.build obj=mm
+(cat /dev/null; ) > mm/modules.order
+make -f scripts/Makefile.build obj=fs
+make -f scripts/Makefile.build obj=fs/cramfs
+(cat /dev/null; ) > fs/cramfs/modules.order
+make -f scripts/Makefile.build obj=fs/debugfs
+(cat /dev/null; ) > fs/debugfs/modules.order
+make -f scripts/Makefile.build obj=fs/devpts
+(cat /dev/null; ) > fs/devpts/modules.order
+make -f scripts/Makefile.build obj=fs/exofs
+(cat /dev/null; ) > fs/exofs/modules.order
+make -f scripts/Makefile.build obj=fs/exportfs
+(cat /dev/null; ) > fs/exportfs/modules.order
+make -f scripts/Makefile.build obj=fs/ext2
+(cat /dev/null; ) > fs/ext2/modules.order
+make -f scripts/Makefile.build obj=fs/ext3
+(cat /dev/null; ) > fs/ext3/modules.order
+make -f scripts/Makefile.build obj=fs/ext4
+(cat /dev/null; ) > fs/ext4/modules.order
+make -f scripts/Makefile.build obj=fs/fat
+(cat /dev/null; ) > fs/fat/modules.order
+make -f scripts/Makefile.build obj=fs/fuse
+(cat /dev/null; ) > fs/fuse/modules.order
+make -f scripts/Makefile.build obj=fs/jbd
+(cat /dev/null; ) > fs/jbd/modules.order
+make -f scripts/Makefile.build obj=fs/jbd2
+(cat /dev/null; ) > fs/jbd2/modules.order
+make -f scripts/Makefile.build obj=fs/lockd
+(cat /dev/null; ) > fs/lockd/modules.order
+make -f scripts/Makefile.build obj=fs/nfs
+(cat /dev/null; ) > fs/nfs/modules.order
+make -f scripts/Makefile.build obj=fs/nfs_common
+(cat /dev/null; ) > fs/nfs_common/modules.order
+make -f scripts/Makefile.build obj=fs/nfsd
+(cat /dev/null; ) > fs/nfsd/modules.order
+make -f scripts/Makefile.build obj=fs/nls
+(cat /dev/null; ) > fs/nls/modules.order
+make -f scripts/Makefile.build obj=fs/notify
+make -f scripts/Makefile.build obj=fs/notify/dnotify
+(cat /dev/null; ) > fs/notify/dnotify/modules.order
+make -f scripts/Makefile.build obj=fs/notify/fanotify
+(cat /dev/null; ) > fs/notify/fanotify/modules.order
+make -f scripts/Makefile.build obj=fs/notify/inotify
+(cat /dev/null; ) > fs/notify/inotify/modules.order
+(cat /dev/null;   cat fs/notify/dnotify/modules.order;   cat fs/notify/inotify/modules.order;   cat fs/notify/fanotify/modules.order;) > fs/notify/modules.order
+make -f scripts/Makefile.build obj=fs/proc
+(cat /dev/null; ) > fs/proc/modules.order
+make -f scripts/Makefile.build obj=fs/quota
+(cat /dev/null; ) > fs/quota/modules.order
+make -f scripts/Makefile.build obj=fs/ramfs
+(cat /dev/null; ) > fs/ramfs/modules.order
+make -f scripts/Makefile.build obj=fs/sysfs
+(cat /dev/null; ) > fs/sysfs/modules.order
+(cat /dev/null;   cat fs/notify/modules.order;   cat fs/nfs_common/modules.order;   cat fs/quota/modules.order;   cat fs/proc/modules.order;   cat fs/sysfs/modules.order;   cat fs/devpts/modules.order;   cat fs/ext3/modules.order;   cat fs/ext2/modules.order;   cat fs/ext4/modules.order;   cat fs/jbd/modules.order;   cat fs/jbd2/modules.order;   cat fs/cramfs/modules.order;   cat fs/ramfs/modules.order;   cat fs/fat/modules.order;   cat fs/nfs/modules.order;   cat fs/exportfs/modules.order;   cat fs/nfsd/modules.order;   cat fs/lockd/modules.order;   cat fs/nls/modules.order;   cat fs/fuse/modules.order;   cat fs/debugfs/modules.order;   cat fs/exofs/modules.order;) > fs/modules.order
+make -f scripts/Makefile.build obj=ipc
+(cat /dev/null; ) > ipc/modules.order
+make -f scripts/Makefile.build obj=security
+make -f scripts/Makefile.build obj=security/keys
+(cat /dev/null; ) > security/keys/modules.order
+(cat /dev/null;   cat security/keys/modules.order;) > security/modules.order
+make -f scripts/Makefile.build obj=crypto
+(cat /dev/null; ) > crypto/modules.order
+make -f scripts/Makefile.build obj=block
+make -f scripts/Makefile.build obj=block/partitions
+(cat /dev/null; ) > block/partitions/modules.order
+(cat /dev/null;   cat block/partitions/modules.order;) > block/modules.order
+make -f scripts/Makefile.build obj=drivers
+make -f scripts/Makefile.build obj=drivers/amba
+(cat /dev/null; ) > drivers/amba/modules.order
+make -f scripts/Makefile.build obj=drivers/auxdisplay
+(cat /dev/null; ) > drivers/auxdisplay/modules.order
+make -f scripts/Makefile.build obj=drivers/base
+make -f scripts/Makefile.build obj=drivers/base/power
+(cat /dev/null; ) > drivers/base/power/modules.order
+make -f scripts/Makefile.build obj=drivers/base/regmap
+(cat /dev/null; ) > drivers/base/regmap/modules.order
+(cat /dev/null;   cat drivers/base/power/modules.order;   cat drivers/base/regmap/modules.order;) > drivers/base/modules.order
+make -f scripts/Makefile.build obj=drivers/block
+(cat /dev/null; ) > drivers/block/modules.order
+make -f scripts/Makefile.build obj=drivers/bluetooth
+(cat /dev/null; ) > drivers/bluetooth/modules.order
+make -f scripts/Makefile.build obj=drivers/cdrom
+(cat /dev/null; ) > drivers/cdrom/modules.order
+make -f scripts/Makefile.build obj=drivers/char
+(cat /dev/null; ) > drivers/char/modules.order
+make -f scripts/Makefile.build obj=drivers/clk
+(cat /dev/null; ) > drivers/clk/modules.order
+make -f scripts/Makefile.build obj=drivers/clocksource
+(cat /dev/null; ) > drivers/clocksource/modules.order
+make -f scripts/Makefile.build obj=drivers/cpufreq
+(cat /dev/null; ) > drivers/cpufreq/modules.order
+make -f scripts/Makefile.build obj=drivers/cpuidle
+make -f scripts/Makefile.build obj=drivers/cpuidle/governors
+(cat /dev/null; ) > drivers/cpuidle/governors/modules.order
+(cat /dev/null;   cat drivers/cpuidle/governors/modules.order;) > drivers/cpuidle/modules.order
+make -f scripts/Makefile.build obj=drivers/crypto
+(cat /dev/null; ) > drivers/crypto/modules.order
+make -f scripts/Makefile.build obj=drivers/firewire
+(cat /dev/null; ) > drivers/firewire/modules.order
+make -f scripts/Makefile.build obj=drivers/firmware
+(cat /dev/null; ) > drivers/firmware/modules.order
+make -f scripts/Makefile.build obj=drivers/gpio
+(cat /dev/null; ) > drivers/gpio/modules.order
+make -f scripts/Makefile.build obj=drivers/gpu
+make -f scripts/Makefile.build obj=drivers/gpu/arm/mali400_r3p2-01rel1
+make -f scripts/Makefile.build obj=drivers/gpu/arm/mali400_r3p2-01rel1/mali
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/.mali_osk_atomics.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/license/gpl -DSELF_MAP_ERRCODE -DMALI_FAKE_PLATFORM_DEVICE=1 -DCONFIG_MALI400_UMP=1 -DMALI_USE_UNIFIED_MEMORY_PROVIDER=1 -DCONFIG_PM_RUNTIME=1 -DCONFIG_SYNC=1 -D_MALI_OSK_SPECIFIC_INDIRECT_MMAP -DPROFILING_SKIP_PP_JOBS=0 -DPROFILING_SKIP_PP_AND_GP_JOBS=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP=0 -DMALI_PP_SCHEDULER_KEEP_SUB_JOB_STARTS_ALIGNED=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP_BETWEEN_APPS=0 -DMALI_POWER_MGMT_TEST_SUITE=0 -DMALI_STATE_TRACKING=0 -DMALI_OS_MEMORY_KERNEL_BUFFER_SIZE_IN_MB=16 -DUSING_GPU_UTILIZATION=1 -DMALI_UPPER_HALF_SCHEDULING -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/../include/ump -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/include -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/platform -DSVN_REV_STRING=\"\"  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali_osk_atomics)"  -D"KBUILD_MODNAME=KBUILD_STR(mali)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_atomics.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_atomics.c
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/.mali_osk_locks.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/license/gpl -DSELF_MAP_ERRCODE -DMALI_FAKE_PLATFORM_DEVICE=1 -DCONFIG_MALI400_UMP=1 -DMALI_USE_UNIFIED_MEMORY_PROVIDER=1 -DCONFIG_PM_RUNTIME=1 -DCONFIG_SYNC=1 -D_MALI_OSK_SPECIFIC_INDIRECT_MMAP -DPROFILING_SKIP_PP_JOBS=0 -DPROFILING_SKIP_PP_AND_GP_JOBS=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP=0 -DMALI_PP_SCHEDULER_KEEP_SUB_JOB_STARTS_ALIGNED=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP_BETWEEN_APPS=0 -DMALI_POWER_MGMT_TEST_SUITE=0 -DMALI_STATE_TRACKING=0 -DMALI_OS_MEMORY_KERNEL_BUFFER_SIZE_IN_MB=16 -DUSING_GPU_UTILIZATION=1 -DMALI_UPPER_HALF_SCHEDULING -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/../include/ump -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/include -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/platform -DSVN_REV_STRING=\"\"  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali_osk_locks)"  -D"KBUILD_MODNAME=KBUILD_STR(mali)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_locks.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_locks.c
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/.mali_osk_math.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/license/gpl -DSELF_MAP_ERRCODE -DMALI_FAKE_PLATFORM_DEVICE=1 -DCONFIG_MALI400_UMP=1 -DMALI_USE_UNIFIED_MEMORY_PROVIDER=1 -DCONFIG_PM_RUNTIME=1 -DCONFIG_SYNC=1 -D_MALI_OSK_SPECIFIC_INDIRECT_MMAP -DPROFILING_SKIP_PP_JOBS=0 -DPROFILING_SKIP_PP_AND_GP_JOBS=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP=0 -DMALI_PP_SCHEDULER_KEEP_SUB_JOB_STARTS_ALIGNED=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP_BETWEEN_APPS=0 -DMALI_POWER_MGMT_TEST_SUITE=0 -DMALI_STATE_TRACKING=0 -DMALI_OS_MEMORY_KERNEL_BUFFER_SIZE_IN_MB=16 -DUSING_GPU_UTILIZATION=1 -DMALI_UPPER_HALF_SCHEDULING -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/../include/ump -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/include -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/platform -DSVN_REV_STRING=\"\"  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali_osk_math)"  -D"KBUILD_MODNAME=KBUILD_STR(mali)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_math.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_math.c
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/.mali_osk_memory.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/license/gpl -DSELF_MAP_ERRCODE -DMALI_FAKE_PLATFORM_DEVICE=1 -DCONFIG_MALI400_UMP=1 -DMALI_USE_UNIFIED_MEMORY_PROVIDER=1 -DCONFIG_PM_RUNTIME=1 -DCONFIG_SYNC=1 -D_MALI_OSK_SPECIFIC_INDIRECT_MMAP -DPROFILING_SKIP_PP_JOBS=0 -DPROFILING_SKIP_PP_AND_GP_JOBS=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP=0 -DMALI_PP_SCHEDULER_KEEP_SUB_JOB_STARTS_ALIGNED=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP_BETWEEN_APPS=0 -DMALI_POWER_MGMT_TEST_SUITE=0 -DMALI_STATE_TRACKING=0 -DMALI_OS_MEMORY_KERNEL_BUFFER_SIZE_IN_MB=16 -DUSING_GPU_UTILIZATION=1 -DMALI_UPPER_HALF_SCHEDULING -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/../include/ump -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/include -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/platform -DSVN_REV_STRING=\"\"  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali_osk_memory)"  -D"KBUILD_MODNAME=KBUILD_STR(mali)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_memory.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_memory.c
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/.mali_osk_misc.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/license/gpl -DSELF_MAP_ERRCODE -DMALI_FAKE_PLATFORM_DEVICE=1 -DCONFIG_MALI400_UMP=1 -DMALI_USE_UNIFIED_MEMORY_PROVIDER=1 -DCONFIG_PM_RUNTIME=1 -DCONFIG_SYNC=1 -D_MALI_OSK_SPECIFIC_INDIRECT_MMAP -DPROFILING_SKIP_PP_JOBS=0 -DPROFILING_SKIP_PP_AND_GP_JOBS=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP=0 -DMALI_PP_SCHEDULER_KEEP_SUB_JOB_STARTS_ALIGNED=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP_BETWEEN_APPS=0 -DMALI_POWER_MGMT_TEST_SUITE=0 -DMALI_STATE_TRACKING=0 -DMALI_OS_MEMORY_KERNEL_BUFFER_SIZE_IN_MB=16 -DUSING_GPU_UTILIZATION=1 -DMALI_UPPER_HALF_SCHEDULING -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/../include/ump -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/include -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/platform -DSVN_REV_STRING=\"\"  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali_osk_misc)"  -D"KBUILD_MODNAME=KBUILD_STR(mali)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_misc.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_misc.c
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/.mali_kernel_linux.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/license/gpl -DSELF_MAP_ERRCODE -DMALI_FAKE_PLATFORM_DEVICE=1 -DCONFIG_MALI400_UMP=1 -DMALI_USE_UNIFIED_MEMORY_PROVIDER=1 -DCONFIG_PM_RUNTIME=1 -DCONFIG_SYNC=1 -D_MALI_OSK_SPECIFIC_INDIRECT_MMAP -DPROFILING_SKIP_PP_JOBS=0 -DPROFILING_SKIP_PP_AND_GP_JOBS=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP=0 -DMALI_PP_SCHEDULER_KEEP_SUB_JOB_STARTS_ALIGNED=0 -DMALI_PP_SCHEDULER_FORCE_NO_JOB_OVERLAP_BETWEEN_APPS=0 -DMALI_POWER_MGMT_TEST_SUITE=0 -DMALI_STATE_TRACKING=0 -DMALI_OS_MEMORY_KERNEL_BUFFER_SIZE_IN_MB=16 -DUSING_GPU_UTILIZATION=1 -DMALI_UPPER_HALF_SCHEDULING -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/../include/ump -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/include -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/mali/platform -DSVN_REV_STRING=\"\"  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali_kernel_linux)"  -D"KBUILD_MODNAME=KBUILD_STR(mali)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_kernel_linux.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_kernel_linux.c
+  arm-linux-gnueabihf-ld -EL    -r -o drivers/gpu/arm/mali400_r3p2-01rel1/mali/mali.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_irq.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_wq.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_wait_queue.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_low_level_mem.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_mali.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_notification.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_time.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_timers.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_atomics.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_locks.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_math.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_memory.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_misc.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_ukk_mem.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_ukk_gp.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_ukk_pp.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_ukk_core.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_kernel_core.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_kernel_linux.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_kernel_descriptor_mapping.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_session.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_device_pause_resume.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_kernel_vsync.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_ukk_vsync.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_kernel_sysfs.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_mmu.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_mmu_page_directory.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_memory.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_kernel_memory_engine.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_block_allocator.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_kernel_mem_os.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_mem_validation.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_hw_core.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_gp.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_pp.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_pp_job.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_gp_job.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_scheduler.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_gp_scheduler.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_pp_scheduler.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_group.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_dlbu.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_broadcast.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_pm.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_pmu.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_user_settings_db.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_kernel_utilization.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/common/mali_l2_cache.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_osk_pm.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_pmu_power_up_down.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/__malidrv_build_info.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/platform/ns115/ns115.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_sync.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/linux/mali_sync_user.o 
+(cat /dev/null;   echo kernel/drivers/gpu/arm/mali400_r3p2-01rel1/mali/mali.ko;) > drivers/gpu/arm/mali400_r3p2-01rel1/mali/modules.order
+make -f scripts/Makefile.build obj=drivers/gpu/arm/mali400_r3p2-01rel1/ump
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/.ump_kernel_linux.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -DSVN_REV= -DSVN_REV_STRING=\"\" -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../include/ump -DMALI_STATE_TRACKING=0 -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/license/gpl  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(ump_kernel_linux)"  -D"KBUILD_MODNAME=KBUILD_STR(ump)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_kernel_linux.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_kernel_linux.c
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/.ump_memory_backend.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -DSVN_REV= -DSVN_REV_STRING=\"\" -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../include/ump -DMALI_STATE_TRACKING=0 -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/license/gpl  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(ump_memory_backend)"  -D"KBUILD_MODNAME=KBUILD_STR(ump)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_memory_backend.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_memory_backend.c
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/.mali_osk_atomics.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -DSVN_REV= -DSVN_REV_STRING=\"\" -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../include/ump -DMALI_STATE_TRACKING=0 -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/license/gpl  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali_osk_atomics)"  -D"KBUILD_MODNAME=KBUILD_STR(ump)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_atomics.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_atomics.c
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/.mali_osk_locks.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -DSVN_REV= -DSVN_REV_STRING=\"\" -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../include/ump -DMALI_STATE_TRACKING=0 -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/license/gpl  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali_osk_locks)"  -D"KBUILD_MODNAME=KBUILD_STR(ump)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_locks.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_locks.c
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/.mali_osk_memory.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -DSVN_REV= -DSVN_REV_STRING=\"\" -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../include/ump -DMALI_STATE_TRACKING=0 -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/license/gpl  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali_osk_memory)"  -D"KBUILD_MODNAME=KBUILD_STR(ump)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_memory.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_memory.c
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/.mali_osk_math.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -DSVN_REV= -DSVN_REV_STRING=\"\" -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../include/ump -DMALI_STATE_TRACKING=0 -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/license/gpl  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali_osk_math)"  -D"KBUILD_MODNAME=KBUILD_STR(ump)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_math.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_math.c
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/.mali_osk_misc.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -DSVN_REV= -DSVN_REV_STRING=\"\" -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/common -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/../include/ump -DMALI_STATE_TRACKING=0 -DDEBUG -Idrivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/license/gpl  -DMODULE  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali_osk_misc)"  -D"KBUILD_MODNAME=KBUILD_STR(ump)" -c -o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_misc.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_misc.c
+  arm-linux-gnueabihf-ld -EL    -r -o drivers/gpu/arm/mali400_r3p2-01rel1/ump/ump.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/common/ump_kernel_common.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/common/ump_kernel_descriptor_mapping.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/common/ump_kernel_api.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/common/ump_kernel_ref_drv.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_kernel_linux.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_kernel_memory_backend_os.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_kernel_memory_backend_dedicated.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_memory_backend.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_ukk_wrappers.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_ukk_ref_wrappers.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_osk_atomics.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_osk_low_level_mem.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/linux/ump_osk_misc.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_atomics.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_locks.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_memory.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_math.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/../mali/linux/mali_osk_misc.o 
+(cat /dev/null;   echo kernel/drivers/gpu/arm/mali400_r3p2-01rel1/ump/ump.ko;) > drivers/gpu/arm/mali400_r3p2-01rel1/ump/modules.order
+(cat /dev/null;   cat drivers/gpu/arm/mali400_r3p2-01rel1/ump/modules.order;   cat drivers/gpu/arm/mali400_r3p2-01rel1/mali/modules.order;) > drivers/gpu/arm/mali400_r3p2-01rel1/modules.order
+make -f scripts/Makefile.build obj=drivers/gpu/drm
+make -f scripts/Makefile.build obj=drivers/gpu/drm/i2c
+(cat /dev/null; ) > drivers/gpu/drm/i2c/modules.order
+(cat /dev/null;   cat drivers/gpu/drm/i2c/modules.order;) > drivers/gpu/drm/modules.order
+make -f scripts/Makefile.build obj=drivers/gpu/ion
+(cat /dev/null; ) > drivers/gpu/ion/modules.order
+make -f scripts/Makefile.build obj=drivers/gpu/stub
+(cat /dev/null; ) > drivers/gpu/stub/modules.order
+make -f scripts/Makefile.build obj=drivers/gpu/vga
+(cat /dev/null; ) > drivers/gpu/vga/modules.order
+(cat /dev/null;   cat drivers/gpu/drm/modules.order;   cat drivers/gpu/vga/modules.order;   cat drivers/gpu/stub/modules.order;   cat drivers/gpu/ion/modules.order;   cat drivers/gpu/arm/mali400_r3p2-01rel1/modules.order;) > drivers/gpu/modules.order
+make -f scripts/Makefile.build obj=drivers/hid
+make -f scripts/Makefile.build obj=drivers/hid/usbhid
+(cat /dev/null; ) > drivers/hid/usbhid/modules.order
+(cat /dev/null;   cat drivers/hid/usbhid/modules.order;   echo kernel/drivers/hid/hid-logitech-dj.ko;) > drivers/hid/modules.order
+make -f scripts/Makefile.build obj=drivers/hsi
+make -f scripts/Makefile.build obj=drivers/hsi/clients
+(cat /dev/null; ) > drivers/hsi/clients/modules.order
+(cat /dev/null;   cat drivers/hsi/clients/modules.order;) > drivers/hsi/modules.order
+make -f scripts/Makefile.build obj=drivers/hwmon
+(cat /dev/null;   echo kernel/drivers/hwmon/pcf8591.ko;) > drivers/hwmon/modules.order
+make -f scripts/Makefile.build obj=drivers/i2c
+make -f scripts/Makefile.build obj=drivers/i2c/algos
+(cat /dev/null; ) > drivers/i2c/algos/modules.order
+make -f scripts/Makefile.build obj=drivers/i2c/busses
+(cat /dev/null; ) > drivers/i2c/busses/modules.order
+make -f scripts/Makefile.build obj=drivers/i2c/muxes
+(cat /dev/null; ) > drivers/i2c/muxes/modules.order
+(cat /dev/null;   cat drivers/i2c/algos/modules.order;   cat drivers/i2c/busses/modules.order;   cat drivers/i2c/muxes/modules.order;) > drivers/i2c/modules.order
+make -f scripts/Makefile.build obj=drivers/idle
+(cat /dev/null; ) > drivers/idle/modules.order
+make -f scripts/Makefile.build obj=drivers/ieee802154
+(cat /dev/null; ) > drivers/ieee802154/modules.order
+make -f scripts/Makefile.build obj=drivers/input
+make -f scripts/Makefile.build obj=drivers/input/joystick
+make -f scripts/Makefile.build obj=drivers/input/joystick/iforce
+(cat /dev/null; ) > drivers/input/joystick/iforce/modules.order
+(cat /dev/null;   cat drivers/input/joystick/iforce/modules.order;) > drivers/input/joystick/modules.order
+make -f scripts/Makefile.build obj=drivers/input/keyboard
+(cat /dev/null; ) > drivers/input/keyboard/modules.order
+make -f scripts/Makefile.build obj=drivers/input/misc
+(cat /dev/null; ) > drivers/input/misc/modules.order
+make -f scripts/Makefile.build obj=drivers/input/mouse
+(cat /dev/null; ) > drivers/input/mouse/modules.order
+(cat /dev/null;   cat drivers/input/keyboard/modules.order;   cat drivers/input/mouse/modules.order;   cat drivers/input/joystick/modules.order;   cat drivers/input/misc/modules.order;) > drivers/input/modules.order
+make -f scripts/Makefile.build obj=drivers/input/gameport
+(cat /dev/null; ) > drivers/input/gameport/modules.order
+make -f scripts/Makefile.build obj=drivers/input/serio
+(cat /dev/null; ) > drivers/input/serio/modules.order
+make -f scripts/Makefile.build obj=drivers/iommu
+(cat /dev/null; ) > drivers/iommu/modules.order
+make -f scripts/Makefile.build obj=drivers/leds
+(cat /dev/null; ) > drivers/leds/modules.order
+make -f scripts/Makefile.build obj=drivers/lguest
+(cat /dev/null; ) > drivers/lguest/modules.order
+make -f scripts/Makefile.build obj=drivers/macintosh
+(cat /dev/null; ) > drivers/macintosh/modules.order
+make -f scripts/Makefile.build obj=drivers/md
+(cat /dev/null; ) > drivers/md/modules.order
+make -f scripts/Makefile.build obj=drivers/media
+make -f scripts/Makefile.build obj=drivers/media/common
+make -f scripts/Makefile.build obj=drivers/media/common/tuners
+(cat /dev/null; ) > drivers/media/common/tuners/modules.order
+(cat /dev/null;   cat drivers/media/common/tuners/modules.order;) > drivers/media/common/modules.order
+make -f scripts/Makefile.build obj=drivers/media/radio
+(cat /dev/null; ) > drivers/media/radio/modules.order
+make -f scripts/Makefile.build obj=drivers/media/rc
+make -f scripts/Makefile.build obj=drivers/media/rc/keymaps
+(cat /dev/null; ) > drivers/media/rc/keymaps/modules.order
+(cat /dev/null;   cat drivers/media/rc/keymaps/modules.order;) > drivers/media/rc/modules.order
+make -f scripts/Makefile.build obj=drivers/media/video
+make -f scripts/Makefile.build obj=drivers/media/video/davinci
+(cat /dev/null; ) > drivers/media/video/davinci/modules.order
+make -f scripts/Makefile.build obj=drivers/media/video/gspca
+(cat /dev/null;   echo kernel/drivers/media/video/gspca/gspca_main.ko;) > drivers/media/video/gspca/modules.order
+make -f scripts/Makefile.build obj=drivers/media/video/uvc
+(cat /dev/null; ) > drivers/media/video/uvc/modules.order
+(cat /dev/null;   cat drivers/media/video/uvc/modules.order;   cat drivers/media/video/davinci/modules.order;   cat drivers/media/video/gspca/modules.order;) > drivers/media/video/modules.order
+(cat /dev/null;   cat drivers/media/common/modules.order;   cat drivers/media/rc/modules.order;   cat drivers/media/video/modules.order;   cat drivers/media/radio/modules.order;) > drivers/media/modules.order
+make -f scripts/Makefile.build obj=drivers/mfd
+(cat /dev/null; ) > drivers/mfd/modules.order
+make -f scripts/Makefile.build obj=drivers/misc
+make -f scripts/Makefile.build obj=drivers/misc/carma
+(cat /dev/null; ) > drivers/misc/carma/modules.order
+make -f scripts/Makefile.build obj=drivers/misc/cb710
+(cat /dev/null; ) > drivers/misc/cb710/modules.order
+make -f scripts/Makefile.build obj=drivers/misc/eeprom
+(cat /dev/null; ) > drivers/misc/eeprom/modules.order
+make -f scripts/Makefile.build obj=drivers/misc/lis3lv02d
+(cat /dev/null; ) > drivers/misc/lis3lv02d/modules.order
+make -f scripts/Makefile.build obj=drivers/misc/ti-st
+(cat /dev/null; ) > drivers/misc/ti-st/modules.order
+(cat /dev/null;   cat drivers/misc/eeprom/modules.order;   cat drivers/misc/cb710/modules.order;   cat drivers/misc/ti-st/modules.order;   cat drivers/misc/lis3lv02d/modules.order;   cat drivers/misc/carma/modules.order;) > drivers/misc/modules.order
+make -f scripts/Makefile.build obj=drivers/mmc
+make -f scripts/Makefile.build obj=drivers/mmc/card
+(cat /dev/null; ) > drivers/mmc/card/modules.order
+make -f scripts/Makefile.build obj=drivers/mmc/core
+(cat /dev/null; ) > drivers/mmc/core/modules.order
+make -f scripts/Makefile.build obj=drivers/mmc/host
+(cat /dev/null; ) > drivers/mmc/host/modules.order
+(cat /dev/null;   cat drivers/mmc/core/modules.order;   cat drivers/mmc/card/modules.order;   cat drivers/mmc/host/modules.order;) > drivers/mmc/modules.order
+make -f scripts/Makefile.build obj=drivers/net
+make -f scripts/Makefile.build obj=drivers/net/ppp
+(cat /dev/null; ) > drivers/net/ppp/modules.order
+make -f scripts/Makefile.build obj=drivers/net/slip
+(cat /dev/null; ) > drivers/net/slip/modules.order
+make -f scripts/Makefile.build obj=drivers/net/usb
+(cat /dev/null;   echo kernel/drivers/net/usb/sr9800.ko;) > drivers/net/usb/modules.order
+make -f scripts/Makefile.build obj=drivers/net/wireless
+(cat /dev/null; ) > drivers/net/wireless/modules.order
+(cat /dev/null;   cat drivers/net/ppp/modules.order;   cat drivers/net/ppp/modules.order;   cat drivers/net/ppp/modules.order;   cat drivers/net/ppp/modules.order;   cat drivers/net/ppp/modules.order;   cat drivers/net/ppp/modules.order;   cat drivers/net/ppp/modules.order;   cat drivers/net/slip/modules.order;   cat drivers/net/wireless/modules.order;   cat drivers/net/usb/modules.order;   cat drivers/net/usb/modules.order;   cat drivers/net/usb/modules.order;   cat drivers/net/usb/modules.order;   cat drivers/net/usb/modules.order;   cat drivers/net/usb/modules.order;   cat drivers/net/usb/modules.order;) > drivers/net/modules.order
+make -f scripts/Makefile.build obj=drivers/nfc
+(cat /dev/null; ) > drivers/nfc/modules.order
+make -f scripts/Makefile.build obj=drivers/pinctrl
+(cat /dev/null; ) > drivers/pinctrl/modules.order
+make -f scripts/Makefile.build obj=drivers/platform
+(cat /dev/null; ) > drivers/platform/modules.order
+make -f scripts/Makefile.build obj=drivers/power
+(cat /dev/null; ) > drivers/power/modules.order
+make -f scripts/Makefile.build obj=drivers/rtc
+(cat /dev/null; ) > drivers/rtc/modules.order
+make -f scripts/Makefile.build obj=drivers/scsi
+make -f scripts/Makefile.build obj=drivers/scsi/arm
+(cat /dev/null; ) > drivers/scsi/arm/modules.order
+(cat /dev/null;   cat drivers/scsi/arm/modules.order;   echo kernel/drivers/scsi/scsi_wait_scan.ko;) > drivers/scsi/modules.order
+make -f scripts/Makefile.build obj=drivers/staging
+make -f scripts/Makefile.build obj=drivers/staging/android
+(cat /dev/null; ) > drivers/staging/android/modules.order
+make -f scripts/Makefile.build obj=drivers/staging/media
+make -f scripts/Makefile.build obj=drivers/staging/media/lirc
+(cat /dev/null; ) > drivers/staging/media/lirc/modules.order
+(cat /dev/null;   cat drivers/staging/media/lirc/modules.order;) > drivers/staging/media/modules.order
+make -f scripts/Makefile.build obj=drivers/staging/serial
+(cat /dev/null; ) > drivers/staging/serial/modules.order
+(cat /dev/null;   cat drivers/staging/serial/modules.order;   cat drivers/staging/media/modules.order;   cat drivers/staging/android/modules.order;) > drivers/staging/modules.order
+make -f scripts/Makefile.build obj=drivers/stm
+(cat /dev/null; ) > drivers/stm/modules.order
+make -f scripts/Makefile.build obj=drivers/switch
+(cat /dev/null; ) > drivers/switch/modules.order
+make -f scripts/Makefile.build obj=drivers/tty
+make -f scripts/Makefile.build obj=drivers/tty/ipwireless
+(cat /dev/null; ) > drivers/tty/ipwireless/modules.order
+make -f scripts/Makefile.build obj=drivers/tty/serial
+make -f scripts/Makefile.build obj=drivers/tty/serial/8250
+(cat /dev/null; ) > drivers/tty/serial/8250/modules.order
+(cat /dev/null;   cat drivers/tty/serial/8250/modules.order;) > drivers/tty/serial/modules.order
+make -f scripts/Makefile.build obj=drivers/tty/vt
+(cat /dev/null; ) > drivers/tty/vt/modules.order
+(cat /dev/null;   cat drivers/tty/vt/modules.order;   cat drivers/tty/serial/modules.order;   cat drivers/tty/ipwireless/modules.order;) > drivers/tty/modules.order
+make -f scripts/Makefile.build obj=drivers/usb
+make -f scripts/Makefile.build obj=drivers/usb/class
+(cat /dev/null; ) > drivers/usb/class/modules.order
+make -f scripts/Makefile.build obj=drivers/usb/core
+(cat /dev/null; ) > drivers/usb/core/modules.order
+make -f scripts/Makefile.build obj=drivers/usb/gadget
+(cat /dev/null; ) > drivers/usb/gadget/modules.order
+make -f scripts/Makefile.build obj=drivers/usb/host
+(cat /dev/null; ) > drivers/usb/host/modules.order
+make -f scripts/Makefile.build obj=drivers/usb/misc
+(cat /dev/null; ) > drivers/usb/misc/modules.order
+make -f scripts/Makefile.build obj=drivers/usb/serial
+(cat /dev/null; ) > drivers/usb/serial/modules.order
+make -f scripts/Makefile.build obj=drivers/usb/storage
+(cat /dev/null; ) > drivers/usb/storage/modules.order
+(cat /dev/null;   cat drivers/usb/core/modules.order;   cat drivers/usb/host/modules.order;   cat drivers/usb/host/modules.order;   cat drivers/usb/class/modules.order;   cat drivers/usb/storage/modules.order;   cat drivers/usb/storage/modules.order;   cat drivers/usb/serial/modules.order;   cat drivers/usb/misc/modules.order;   cat drivers/usb/gadget/modules.order;) > drivers/usb/modules.order
+make -f scripts/Makefile.build obj=drivers/video
+make -f scripts/Makefile.build obj=drivers/video/backlight
+(cat /dev/null; ) > drivers/video/backlight/modules.order
+make -f scripts/Makefile.build obj=drivers/video/console
+(cat /dev/null; ) > drivers/video/console/modules.order
+make -f scripts/Makefile.build obj=drivers/video/display
+make -f scripts/Makefile.build obj=drivers/video/display/tve
+(cat /dev/null; ) > drivers/video/display/tve/modules.order
+(cat /dev/null;   cat drivers/video/display/tve/modules.order;) > drivers/video/display/modules.order
+make -f scripts/Makefile.build obj=drivers/video/logo
+(cat /dev/null; ) > drivers/video/logo/modules.order
+make -f scripts/Makefile.build obj=drivers/video/omap2
+make -f scripts/Makefile.build obj=drivers/video/omap2/displays
+(cat /dev/null; ) > drivers/video/omap2/displays/modules.order
+(cat /dev/null;   cat drivers/video/omap2/displays/modules.order;) > drivers/video/omap2/modules.order
+(cat /dev/null;   cat drivers/video/console/modules.order;   cat drivers/video/logo/modules.order;   cat drivers/video/backlight/modules.order;   cat drivers/video/display/modules.order;   cat drivers/video/omap2/modules.order;) > drivers/video/modules.order
+(cat /dev/null;   cat drivers/pinctrl/modules.order;   cat drivers/gpio/modules.order;   cat drivers/video/modules.order;   cat drivers/idle/modules.order;   cat drivers/amba/modules.order;   cat drivers/tty/modules.order;   cat drivers/char/modules.order;   cat drivers/gpu/modules.order;   cat drivers/base/modules.order;   cat drivers/block/modules.order;   cat drivers/misc/modules.order;   cat drivers/mfd/modules.order;   cat drivers/nfc/modules.order;   cat drivers/macintosh/modules.order;   cat drivers/scsi/modules.order;   cat drivers/hsi/modules.order;   cat drivers/mmc/modules.order;   cat drivers/net/modules.order;   cat drivers/firewire/modules.order;   cat drivers/cdrom/modules.order;   cat drivers/auxdisplay/modules.order;   cat drivers/usb/modules.order;   cat drivers/usb/modules.order;   cat drivers/input/serio/modules.order;   cat drivers/input/gameport/modules.order;   cat drivers/input/modules.order;   cat drivers/rtc/modules.order;   cat drivers/i2c/modules.order;   cat drivers/media/modules.order;   cat drivers/power/modules.order;   cat drivers/hwmon/modules.order;   cat drivers/md/modules.order;   cat drivers/bluetooth/modules.order;   cat drivers/lguest/modules.order;   cat drivers/cpufreq/modules.order;   cat drivers/cpuidle/modules.order;   cat drivers/leds/modules.order;   cat drivers/switch/modules.order;   cat drivers/firmware/modules.order;   cat drivers/crypto/modules.order;   cat drivers/clocksource/modules.order;   cat drivers/hid/modules.order;   cat drivers/staging/modules.order;   cat drivers/platform/modules.order;   cat drivers/ieee802154/modules.order;   cat drivers/stm/modules.order;   cat drivers/clk/modules.order;   cat drivers/iommu/modules.order;) > drivers/modules.order
+make -f scripts/Makefile.build obj=sound
+make -f scripts/Makefile.build obj=sound/arm
+(cat /dev/null; ) > sound/arm/modules.order
+make -f scripts/Makefile.build obj=sound/atmel
+(cat /dev/null; ) > sound/atmel/modules.order
+make -f scripts/Makefile.build obj=sound/core
+(cat /dev/null; ) > sound/core/modules.order
+make -f scripts/Makefile.build obj=sound/drivers
+make -f scripts/Makefile.build obj=sound/drivers/mpu401
+(cat /dev/null; ) > sound/drivers/mpu401/modules.order
+make -f scripts/Makefile.build obj=sound/drivers/opl3
+(cat /dev/null; ) > sound/drivers/opl3/modules.order
+make -f scripts/Makefile.build obj=sound/drivers/opl4
+(cat /dev/null; ) > sound/drivers/opl4/modules.order
+make -f scripts/Makefile.build obj=sound/drivers/pcsp
+(cat /dev/null; ) > sound/drivers/pcsp/modules.order
+make -f scripts/Makefile.build obj=sound/drivers/vx
+(cat /dev/null; ) > sound/drivers/vx/modules.order
+(cat /dev/null;   cat sound/drivers/opl3/modules.order;   cat sound/drivers/opl4/modules.order;   cat sound/drivers/mpu401/modules.order;   cat sound/drivers/vx/modules.order;   cat sound/drivers/pcsp/modules.order;) > sound/drivers/modules.order
+make -f scripts/Makefile.build obj=sound/firewire
+(cat /dev/null; ) > sound/firewire/modules.order
+make -f scripts/Makefile.build obj=sound/i2c
+make -f scripts/Makefile.build obj=sound/i2c/other
+(cat /dev/null; ) > sound/i2c/other/modules.order
+(cat /dev/null;   cat sound/i2c/other/modules.order;) > sound/i2c/modules.order
+make -f scripts/Makefile.build obj=sound/isa
+make -f scripts/Makefile.build obj=sound/isa/ad1816a
+(cat /dev/null; ) > sound/isa/ad1816a/modules.order
+make -f scripts/Makefile.build obj=sound/isa/ad1848
+(cat /dev/null; ) > sound/isa/ad1848/modules.order
+make -f scripts/Makefile.build obj=sound/isa/cs423x
+(cat /dev/null; ) > sound/isa/cs423x/modules.order
+make -f scripts/Makefile.build obj=sound/isa/es1688
+(cat /dev/null; ) > sound/isa/es1688/modules.order
+make -f scripts/Makefile.build obj=sound/isa/galaxy
+(cat /dev/null; ) > sound/isa/galaxy/modules.order
+make -f scripts/Makefile.build obj=sound/isa/gus
+(cat /dev/null; ) > sound/isa/gus/modules.order
+make -f scripts/Makefile.build obj=sound/isa/msnd
+(cat /dev/null; ) > sound/isa/msnd/modules.order
+make -f scripts/Makefile.build obj=sound/isa/opti9xx
+(cat /dev/null; ) > sound/isa/opti9xx/modules.order
+make -f scripts/Makefile.build obj=sound/isa/sb
+(cat /dev/null; ) > sound/isa/sb/modules.order
+make -f scripts/Makefile.build obj=sound/isa/wavefront
+(cat /dev/null; ) > sound/isa/wavefront/modules.order
+make -f scripts/Makefile.build obj=sound/isa/wss
+(cat /dev/null; ) > sound/isa/wss/modules.order
+(cat /dev/null;   cat sound/isa/ad1816a/modules.order;   cat sound/isa/ad1848/modules.order;   cat sound/isa/cs423x/modules.order;   cat sound/isa/es1688/modules.order;   cat sound/isa/galaxy/modules.order;   cat sound/isa/gus/modules.order;   cat sound/isa/msnd/modules.order;   cat sound/isa/opti9xx/modules.order;   cat sound/isa/sb/modules.order;   cat sound/isa/wavefront/modules.order;   cat sound/isa/wss/modules.order;) > sound/isa/modules.order
+make -f scripts/Makefile.build obj=sound/mips
+(cat /dev/null; ) > sound/mips/modules.order
+make -f scripts/Makefile.build obj=sound/parisc
+(cat /dev/null; ) > sound/parisc/modules.order
+make -f scripts/Makefile.build obj=sound/pci
+make -f scripts/Makefile.build obj=sound/pci/ac97
+(cat /dev/null; ) > sound/pci/ac97/modules.order
+make -f scripts/Makefile.build obj=sound/pci/ali5451
+(cat /dev/null; ) > sound/pci/ali5451/modules.order
+make -f scripts/Makefile.build obj=sound/pci/asihpi
+(cat /dev/null; ) > sound/pci/asihpi/modules.order
+make -f scripts/Makefile.build obj=sound/pci/au88x0
+(cat /dev/null; ) > sound/pci/au88x0/modules.order
+make -f scripts/Makefile.build obj=sound/pci/aw2
+(cat /dev/null; ) > sound/pci/aw2/modules.order
+make -f scripts/Makefile.build obj=sound/pci/ca0106
+(cat /dev/null; ) > sound/pci/ca0106/modules.order
+make -f scripts/Makefile.build obj=sound/pci/cs46xx
+(cat /dev/null; ) > sound/pci/cs46xx/modules.order
+make -f scripts/Makefile.build obj=sound/pci/cs5535audio
+(cat /dev/null; ) > sound/pci/cs5535audio/modules.order
+make -f scripts/Makefile.build obj=sound/pci/ctxfi
+(cat /dev/null; ) > sound/pci/ctxfi/modules.order
+make -f scripts/Makefile.build obj=sound/pci/echoaudio
+(cat /dev/null; ) > sound/pci/echoaudio/modules.order
+make -f scripts/Makefile.build obj=sound/pci/emu10k1
+(cat /dev/null; ) > sound/pci/emu10k1/modules.order
+make -f scripts/Makefile.build obj=sound/pci/hda
+(cat /dev/null; ) > sound/pci/hda/modules.order
+make -f scripts/Makefile.build obj=sound/pci/ice1712
+(cat /dev/null; ) > sound/pci/ice1712/modules.order
+make -f scripts/Makefile.build obj=sound/pci/korg1212
+(cat /dev/null; ) > sound/pci/korg1212/modules.order
+make -f scripts/Makefile.build obj=sound/pci/lola
+(cat /dev/null; ) > sound/pci/lola/modules.order
+make -f scripts/Makefile.build obj=sound/pci/lx6464es
+(cat /dev/null; ) > sound/pci/lx6464es/modules.order
+make -f scripts/Makefile.build obj=sound/pci/mixart
+(cat /dev/null; ) > sound/pci/mixart/modules.order
+make -f scripts/Makefile.build obj=sound/pci/nm256
+(cat /dev/null; ) > sound/pci/nm256/modules.order
+make -f scripts/Makefile.build obj=sound/pci/oxygen
+(cat /dev/null; ) > sound/pci/oxygen/modules.order
+make -f scripts/Makefile.build obj=sound/pci/pcxhr
+(cat /dev/null; ) > sound/pci/pcxhr/modules.order
+make -f scripts/Makefile.build obj=sound/pci/riptide
+(cat /dev/null; ) > sound/pci/riptide/modules.order
+make -f scripts/Makefile.build obj=sound/pci/rme9652
+(cat /dev/null; ) > sound/pci/rme9652/modules.order
+make -f scripts/Makefile.build obj=sound/pci/trident
+(cat /dev/null; ) > sound/pci/trident/modules.order
+make -f scripts/Makefile.build obj=sound/pci/vx222
+(cat /dev/null; ) > sound/pci/vx222/modules.order
+make -f scripts/Makefile.build obj=sound/pci/ymfpci
+(cat /dev/null; ) > sound/pci/ymfpci/modules.order
+(cat /dev/null;   cat sound/pci/ac97/modules.order;   cat sound/pci/ali5451/modules.order;   cat sound/pci/asihpi/modules.order;   cat sound/pci/au88x0/modules.order;   cat sound/pci/aw2/modules.order;   cat sound/pci/ctxfi/modules.order;   cat sound/pci/ca0106/modules.order;   cat sound/pci/cs46xx/modules.order;   cat sound/pci/cs5535audio/modules.order;   cat sound/pci/lola/modules.order;   cat sound/pci/lx6464es/modules.order;   cat sound/pci/echoaudio/modules.order;   cat sound/pci/emu10k1/modules.order;   cat sound/pci/hda/modules.order;   cat sound/pci/ice1712/modules.order;   cat sound/pci/korg1212/modules.order;   cat sound/pci/mixart/modules.order;   cat sound/pci/nm256/modules.order;   cat sound/pci/oxygen/modules.order;   cat sound/pci/pcxhr/modules.order;   cat sound/pci/riptide/modules.order;   cat sound/pci/rme9652/modules.order;   cat sound/pci/trident/modules.order;   cat sound/pci/ymfpci/modules.order;   cat sound/pci/vx222/modules.order;) > sound/pci/modules.order
+make -f scripts/Makefile.build obj=sound/pcmcia
+make -f scripts/Makefile.build obj=sound/pcmcia/pdaudiocf
+(cat /dev/null; ) > sound/pcmcia/pdaudiocf/modules.order
+make -f scripts/Makefile.build obj=sound/pcmcia/vx
+(cat /dev/null; ) > sound/pcmcia/vx/modules.order
+(cat /dev/null;   cat sound/pcmcia/vx/modules.order;   cat sound/pcmcia/pdaudiocf/modules.order;) > sound/pcmcia/modules.order
+make -f scripts/Makefile.build obj=sound/ppc
+(cat /dev/null; ) > sound/ppc/modules.order
+make -f scripts/Makefile.build obj=sound/sh
+(cat /dev/null; ) > sound/sh/modules.order
+make -f scripts/Makefile.build obj=sound/soc
+make -f scripts/Makefile.build obj=sound/soc/atmel
+(cat /dev/null; ) > sound/soc/atmel/modules.order
+make -f scripts/Makefile.build obj=sound/soc/au1x
+(cat /dev/null; ) > sound/soc/au1x/modules.order
+make -f scripts/Makefile.build obj=sound/soc/blackfin
+(cat /dev/null; ) > sound/soc/blackfin/modules.order
+make -f scripts/Makefile.build obj=sound/soc/codecs
+(cat /dev/null; ) > sound/soc/codecs/modules.order
+make -f scripts/Makefile.build obj=sound/soc/davinci
+(cat /dev/null; ) > sound/soc/davinci/modules.order
+make -f scripts/Makefile.build obj=sound/soc/ep93xx
+(cat /dev/null; ) > sound/soc/ep93xx/modules.order
+make -f scripts/Makefile.build obj=sound/soc/fsl
+(cat /dev/null; ) > sound/soc/fsl/modules.order
+make -f scripts/Makefile.build obj=sound/soc/imx
+(cat /dev/null; ) > sound/soc/imx/modules.order
+make -f scripts/Makefile.build obj=sound/soc/jz4740
+(cat /dev/null; ) > sound/soc/jz4740/modules.order
+make -f scripts/Makefile.build obj=sound/soc/kirkwood
+(cat /dev/null; ) > sound/soc/kirkwood/modules.order
+make -f scripts/Makefile.build obj=sound/soc/mid-x86
+(cat /dev/null; ) > sound/soc/mid-x86/modules.order
+make -f scripts/Makefile.build obj=sound/soc/mxs
+(cat /dev/null; ) > sound/soc/mxs/modules.order
+make -f scripts/Makefile.build obj=sound/soc/nuc900
+(cat /dev/null; ) > sound/soc/nuc900/modules.order
+make -f scripts/Makefile.build obj=sound/soc/nusmart
+(cat /dev/null; ) > sound/soc/nusmart/modules.order
+make -f scripts/Makefile.build obj=sound/soc/omap
+(cat /dev/null; ) > sound/soc/omap/modules.order
+make -f scripts/Makefile.build obj=sound/soc/pxa
+(cat /dev/null; ) > sound/soc/pxa/modules.order
+make -f scripts/Makefile.build obj=sound/soc/s6000
+(cat /dev/null; ) > sound/soc/s6000/modules.order
+make -f scripts/Makefile.build obj=sound/soc/samsung
+(cat /dev/null; ) > sound/soc/samsung/modules.order
+make -f scripts/Makefile.build obj=sound/soc/sh
+(cat /dev/null; ) > sound/soc/sh/modules.order
+make -f scripts/Makefile.build obj=sound/soc/tegra
+(cat /dev/null; ) > sound/soc/tegra/modules.order
+make -f scripts/Makefile.build obj=sound/soc/txx9
+(cat /dev/null; ) > sound/soc/txx9/modules.order
+(cat /dev/null;   cat sound/soc/codecs/modules.order;   cat sound/soc/atmel/modules.order;   cat sound/soc/au1x/modules.order;   cat sound/soc/blackfin/modules.order;   cat sound/soc/davinci/modules.order;   cat sound/soc/ep93xx/modules.order;   cat sound/soc/fsl/modules.order;   cat sound/soc/imx/modules.order;   cat sound/soc/jz4740/modules.order;   cat sound/soc/mid-x86/modules.order;   cat sound/soc/mxs/modules.order;   cat sound/soc/nuc900/modules.order;   cat sound/soc/omap/modules.order;   cat sound/soc/kirkwood/modules.order;   cat sound/soc/pxa/modules.order;   cat sound/soc/samsung/modules.order;   cat sound/soc/s6000/modules.order;   cat sound/soc/sh/modules.order;   cat sound/soc/tegra/modules.order;   cat sound/soc/txx9/modules.order;   cat sound/soc/nusmart/modules.order;) > sound/soc/modules.order
+make -f scripts/Makefile.build obj=sound/sparc
+(cat /dev/null; ) > sound/sparc/modules.order
+make -f scripts/Makefile.build obj=sound/spi
+(cat /dev/null; ) > sound/spi/modules.order
+make -f scripts/Makefile.build obj=sound/synth
+(cat /dev/null; ) > sound/synth/modules.order
+make -f scripts/Makefile.build obj=sound/usb
+make -f scripts/Makefile.build obj=sound/usb/6fire
+(cat /dev/null; ) > sound/usb/6fire/modules.order
+make -f scripts/Makefile.build obj=sound/usb/caiaq
+(cat /dev/null; ) > sound/usb/caiaq/modules.order
+make -f scripts/Makefile.build obj=sound/usb/misc
+(cat /dev/null; ) > sound/usb/misc/modules.order
+make -f scripts/Makefile.build obj=sound/usb/usx2y
+(cat /dev/null; ) > sound/usb/usx2y/modules.order
+(cat /dev/null;   cat sound/usb/misc/modules.order;   cat sound/usb/usx2y/modules.order;   cat sound/usb/caiaq/modules.order;   cat sound/usb/6fire/modules.order;) > sound/usb/modules.order
+(cat /dev/null;   cat sound/core/modules.order;   cat sound/i2c/modules.order;   cat sound/drivers/modules.order;   cat sound/isa/modules.order;   cat sound/pci/modules.order;   cat sound/ppc/modules.order;   cat sound/arm/modules.order;   cat sound/sh/modules.order;   cat sound/synth/modules.order;   cat sound/usb/modules.order;   cat sound/firewire/modules.order;   cat sound/sparc/modules.order;   cat sound/spi/modules.order;   cat sound/parisc/modules.order;   cat sound/pcmcia/modules.order;   cat sound/mips/modules.order;   cat sound/soc/modules.order;   cat sound/atmel/modules.order;) > sound/modules.order
+make -f scripts/Makefile.build obj=firmware
+(cat /dev/null; ) > firmware/modules.order
+make -f scripts/Makefile.build obj=net
+make -f scripts/Makefile.build obj=net/802
+(cat /dev/null; ) > net/802/modules.order
+make -f scripts/Makefile.build obj=net/bluetooth
+make -f scripts/Makefile.build obj=net/bluetooth/bnep
+(cat /dev/null; ) > net/bluetooth/bnep/modules.order
+make -f scripts/Makefile.build obj=net/bluetooth/hidp
+(cat /dev/null; ) > net/bluetooth/hidp/modules.order
+make -f scripts/Makefile.build obj=net/bluetooth/rfcomm
+(cat /dev/null; ) > net/bluetooth/rfcomm/modules.order
+(cat /dev/null;   cat net/bluetooth/rfcomm/modules.order;   cat net/bluetooth/bnep/modules.order;   cat net/bluetooth/hidp/modules.order;) > net/bluetooth/modules.order
+make -f scripts/Makefile.build obj=net/core
+(cat /dev/null; ) > net/core/modules.order
+make -f scripts/Makefile.build obj=net/dns_resolver
+(cat /dev/null; ) > net/dns_resolver/modules.order
+make -f scripts/Makefile.build obj=net/ethernet
+(cat /dev/null; ) > net/ethernet/modules.order
+make -f scripts/Makefile.build obj=net/ipv4
+make -f scripts/Makefile.build obj=net/ipv4/netfilter
+(cat /dev/null; ) > net/ipv4/netfilter/modules.order
+(cat /dev/null;   cat net/ipv4/netfilter/modules.order;) > net/ipv4/modules.order
+make -f scripts/Makefile.build obj=net/ipv6
+make -f scripts/Makefile.build obj=net/ipv6/netfilter
+(cat /dev/null; ) > net/ipv6/netfilter/modules.order
+(cat /dev/null;   cat net/ipv6/netfilter/modules.order;) > net/ipv6/modules.order
+make -f scripts/Makefile.build obj=net/key
+(cat /dev/null; ) > net/key/modules.order
+make -f scripts/Makefile.build obj=net/l2tp
+(cat /dev/null; ) > net/l2tp/modules.order
+make -f scripts/Makefile.build obj=net/netfilter
+(cat /dev/null; ) > net/netfilter/modules.order
+make -f scripts/Makefile.build obj=net/netlink
+(cat /dev/null; ) > net/netlink/modules.order
+make -f scripts/Makefile.build obj=net/packet
+(cat /dev/null; ) > net/packet/modules.order
+make -f scripts/Makefile.build obj=net/rfkill
+(cat /dev/null; ) > net/rfkill/modules.order
+make -f scripts/Makefile.build obj=net/sched
+(cat /dev/null; ) > net/sched/modules.order
+make -f scripts/Makefile.build obj=net/sunrpc
+make -f scripts/Makefile.build obj=net/sunrpc/auth_gss
+(cat /dev/null; ) > net/sunrpc/auth_gss/modules.order
+(cat /dev/null;   cat net/sunrpc/auth_gss/modules.order;) > net/sunrpc/modules.order
+make -f scripts/Makefile.build obj=net/unix
+(cat /dev/null; ) > net/unix/modules.order
+make -f scripts/Makefile.build obj=net/wanrouter
+(cat /dev/null; ) > net/wanrouter/modules.order
+make -f scripts/Makefile.build obj=net/wireless
+(cat /dev/null; ) > net/wireless/modules.order
+make -f scripts/Makefile.build obj=net/xfrm
+(cat /dev/null; ) > net/xfrm/modules.order
+(cat /dev/null;   cat net/core/modules.order;   cat net/ethernet/modules.order;   cat net/802/modules.order;   cat net/sched/modules.order;   cat net/netlink/modules.order;   cat net/netfilter/modules.order;   cat net/ipv4/modules.order;   cat net/xfrm/modules.order;   cat net/unix/modules.order;   cat net/ipv6/modules.order;   cat net/packet/modules.order;   cat net/key/modules.order;   cat net/wanrouter/modules.order;   cat net/bluetooth/modules.order;   cat net/sunrpc/modules.order;   cat net/l2tp/modules.order;   cat net/wireless/modules.order;   cat net/rfkill/modules.order;   cat net/dns_resolver/modules.order;) > net/modules.order
+make -f scripts/Makefile.build obj=arch/arm/lib
+(cat /dev/null; ) > arch/arm/lib/modules.order
+make -f scripts/Makefile.build obj=lib
+make -f scripts/Makefile.build obj=lib/lzo
+(cat /dev/null; ) > lib/lzo/modules.order
+make -f scripts/Makefile.build obj=lib/reed_solomon
+(cat /dev/null; ) > lib/reed_solomon/modules.order
+make -f scripts/Makefile.build obj=lib/xz
+(cat /dev/null; ) > lib/xz/modules.order
+make -f scripts/Makefile.build obj=lib/zlib_deflate
+(cat /dev/null; ) > lib/zlib_deflate/modules.order
+make -f scripts/Makefile.build obj=lib/zlib_inflate
+(cat /dev/null; ) > lib/zlib_inflate/modules.order
+(cat /dev/null;   cat lib/zlib_inflate/modules.order;   cat lib/zlib_deflate/modules.order;   cat lib/reed_solomon/modules.order;   cat lib/lzo/modules.order;   cat lib/lzo/modules.order;   cat lib/xz/modules.order;) > lib/modules.order
+awk '!x[$0]++' /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/init/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/usr/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/vfp/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/kernel/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/mm/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/common/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/net/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/mach-ns115/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/kernel/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/mm/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/fs/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/ipc/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/security/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/crypto/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/block/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/drivers/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/sound/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/firmware/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/net/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/lib/modules.order /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/lib/modules.order > /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/modules.order
+make -f /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/scripts/Makefile.modpost
+  scripts/mod/modpost   -o /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/Module.symvers    -S  -c -s
+  arm-linux-gnueabihf-gcc -Wp,-MD,drivers/gpu/arm/mali400_r3p2-01rel1/mali/.mali.mod.o.d  -nostdinc -isystem /home/zhangbin/android/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/../lib/gcc/arm-linux-gnueabihf/4.8.3/include -I/home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/arch/arm/include -Iarch/arm/include/generated -Iinclude  -include /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/include/linux/kconfig.h -D__KERNEL__ -D__linux_kernel__ -mlittle-endian -Iarch/arm/mach-ns115/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -Os -marm -fno-dwarf2-cfi-asm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO  -D"KBUILD_STR(s)=#s" -D"KBUILD_BASENAME=KBUILD_STR(mali.mod)"  -D"KBUILD_MODNAME=KBUILD_STR(mali)" -DMODULE  -c -o drivers/gpu/arm/mali400_r3p2-01rel1/mali/mali.mod.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/mali.mod.c
+  arm-linux-gnueabihf-ld -EL -r  -T /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/scripts/module-common.lds --build-id  -o drivers/gpu/arm/mali400_r3p2-01rel1/mali/mali.ko drivers/gpu/arm/mali400_r3p2-01rel1/mali/mali.o drivers/gpu/arm/mali400_r3p2-01rel1/mali/mali.mod.o
+  arm-linux-gnueabihf-ld -EL -r  -T /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/scripts/module-common.lds --build-id  -o drivers/gpu/arm/mali400_r3p2-01rel1/ump/ump.ko drivers/gpu/arm/mali400_r3p2-01rel1/ump/ump.o drivers/gpu/arm/mali400_r3p2-01rel1/ump/ump.mod.o
+make -f /home/zhangbin/zbhome/omx/bsp/ns115/testBSP/linux_kernel/scripts/Makefile.fwinst obj=firmware __fw_modbuild
