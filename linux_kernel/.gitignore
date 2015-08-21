@@ -1,6 +1,6 @@
 
 #ignor .config
-.config
+#.config
 
 *.o
 *.o.cmd
